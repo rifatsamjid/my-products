@@ -12,12 +12,10 @@ export default function Navbar() {
           {/* Logo */}
           <div className="flex items-center">
             <Link href="/" className="flex items-center space-x-3">
-              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center font-bold text-lg shadow-lg">
-                A
+              <div className="w-24 h-11 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center font-bold text-lg shadow-lg">
+                Fruit
+                <span className="text-xl font-bold  hidden sm:block">Hub</span>
               </div>
-              <span className="text-xl font-bold  hidden sm:block">
-                API Shield
-              </span>
             </Link>
           </div>
 
