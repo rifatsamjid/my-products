@@ -1,37 +1,48 @@
-// app/products/[id]/page.jsx
+
+"use client";
 import Image from "next/image";
 import { notFound } from "next/navigation";
+import { useEffect, useState } from "react";
+import { addToCart } from "../../../../my-season-shop/lib/cart";
 
-// তোমার API থেকে ডাটা ফেচ করার ফাংশন
-async function getProduct(id) {
-  try {
-    const res = await fetch(`https://my-season-server.onrender.com/products/${id}`, {
-      cache: "no-store", // সবসময় ফ্রেশ ডাটা
-    });
+export default function ProductDetailPage({ params }) {
+  const [product, setProduct] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-    if (!res.ok) {
-      return null;
+  useEffect(() => {
+    async function fetchProduct() {
+      try {
+        const { id } = await params; 
+        
+        const res = await fetch(`https://my-season-server.onrender.com/products/${id}`, {
+          cache: "no-store",
+        });
+
+        if (!res.ok) throw new Error("Product not found");
+        const data = await res.json();
+        setProduct(data);
+      } catch (err) {
+        console.error("Fetch error:", err);
+        notFound(); 
+      } finally {
+        setLoading(false);
+      }
     }
+    fetchProduct();
+  }, [params]);
 
-    return res.json();
-  } catch (error) {
-    console.error("Error fetching product:", error);
-    return null;
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-black">
+        <p className="text-3xl text-white animate-pulse">Loading Product...</p>
+      </div>
+    );
   }
-}
 
-export default async function ProductDetailPage({ params }) {
-  const { id } = await params;
-  const product = await getProduct(id);
-
-  // যদি প্রোডাক্ট না পাওয়া যায় → 404 দেখাবে
-  if (!product) {
-    notFound();
-  }
+  if (!product) return null; 
 
   const { title, full_description, price, image_url, short_description, date } = product;
 
-  // তারিখ ফরম্যাট
   const formatDate = (dateString) => {
     return new Date(dateString).toLocaleDateString("en-US", {
       year: "numeric",
@@ -47,7 +58,7 @@ export default async function ProductDetailPage({ params }) {
           {/* Image */}
           <div className="relative rounded-3xl overflow-hidden shadow-2xl">
             <Image
-              src={image_url || "/api-placeholder.jpg"}
+              src={image_url || "/placeholder.jpg"}
               alt={title}
               width={800}
               height={800}
@@ -59,30 +70,27 @@ export default async function ProductDetailPage({ params }) {
           {/* Details */}
           <div className="space-y-8">
             <div>
-              <h1 className="text-4xl md:text-6xl font-bold text-white mb-4">
-                {title}
-              </h1>
+              <h1 className="text-4xl md:text-6xl font-bold text-white mb-4">{title}</h1>
               <p className="text-gray-300 text-lg">{short_description}</p>
             </div>
 
             <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-8 border border-purple-500/30">
               <div className="text-6xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-emerald-400 mb-2">
-                ${price}
-                <span className="text-2xl text-gray-300 ml-2">/kg</span>
+                ${price}<span className="text-2xl text-gray-300 ml-2">/kg</span>
               </div>
               <p className="text-gray-400 text-sm">Added on: {formatDate(date)}</p>
             </div>
 
             <div>
               <h2 className="text-2xl font-bold text-white mb-4">Description</h2>
-              <p className="text-gray-200 leading-relaxed text-lg">
-                {full_description}
-              </p>
+              <p className="text-gray-200 leading-relaxed text-lg">{full_description}</p>
             </div>
 
-            {/* Action Buttons */}
             <div className="flex gap-4 pt-6">
-              <button className="px-10 py-5 bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-400 hover:to-emerald-400 text-white font-bold text-xl rounded-full shadow-2xl hover:shadow-green-500/50 transition-all duration-300 transform hover:scale-105">
+              <button
+                onClick={() => addToCart(product)}
+                className="px-10 py-5 bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-400 hover:to-emerald-400 text-white font-bold text-xl rounded-full shadow-2xl hover:shadow-green-500/50 transition-all duration-300 transform hover:scale-105"
+              >
                 Add to Cart
               </button>
               <button className="px-10 py-5 bg-white/10 backdrop-blur-md border border-purple-500/50 text-white font-bold text-xl rounded-full hover:bg-white/20 transition">

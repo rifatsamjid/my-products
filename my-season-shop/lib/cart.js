@@ -1,18 +1,23 @@
-// lib/cart.js
+// lib/cart.js → পুরোটা রিপ্লেস করো
+import toast from "react-hot-toast";
+
 export const addToCart = (product) => {
-  if (typeof window === "undefined") return; // SSR এ চলবে না
+  if (typeof window === "undefined") return;
 
   let cart = JSON.parse(localStorage.getItem("cart") || "[]");
 
   const existing = cart.find(item => item._id === product._id);
   if (existing) {
     existing.quantity += 1;
+    toast.success(`${product.title} quantity updated!`);
   } else {
     cart.push({ ...product, quantity: 1 });
+    toast.success(`${product.title} added to cart!`, {
+      icon: "Shopping Cart",
+    });
   }
 
   localStorage.setItem("cart", JSON.stringify(cart));
-  alert(`${product.title} added to cart!`);
 };
 
 export const getCart = () => {
@@ -22,14 +27,18 @@ export const getCart = () => {
 
 export const removeFromCart = (id) => {
   if (typeof window === "undefined") return;
-  let cart = JSON.parse(localStorage.getItem("cart") || "[]");
+  let cart = getCart();
+  const removedItem = cart.find(item => item._id === id);
   cart = cart.filter(item => item._id !== id);
   localStorage.setItem("cart", JSON.stringify(cart));
+  if (removedItem) {
+    toast.error(`${removedItem.title} removed from cart`);
+  }
 };
 
 export const updateQuantity = (id, change) => {
   if (typeof window === "undefined") return;
-  let cart = JSON.parse(localStorage.getItem("cart") || "[]");
+  let cart = getCart();
   cart = cart.map(item => {
     if (item._id === id) {
       item.quantity = Math.max(1, item.quantity + change);
@@ -37,10 +46,4 @@ export const updateQuantity = (id, change) => {
     return item;
   }).filter(item => item.quantity > 0);
   localStorage.setItem("cart", JSON.stringify(cart));
-};
-
-export const clearCart = () => {
-  if (typeof window !== "undefined") {
-    localStorage.removeItem("cart");
-  }
 };
