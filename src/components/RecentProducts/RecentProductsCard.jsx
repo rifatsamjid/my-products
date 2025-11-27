@@ -6,7 +6,6 @@ import { motion } from "framer-motion";
 export default function RecentProductsCard({ products }) {
   const { title, image_url, date, price, short_description } = products;
 
-  // তারিখকে সুন্দর করে দেখানোর জন্য (যেমন: Aug 2025)
   const formatDate = (dateString) => {
     const options = { year: "numeric", month: "short" };
     return new Date(dateString).toLocaleDateString(undefined, options);
@@ -54,6 +53,7 @@ export default function RecentProductsCard({ products }) {
           </div>
 
           {/* Hover Button */}
+          
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             whileHover={{ opacity: 1, x: 0 }}
