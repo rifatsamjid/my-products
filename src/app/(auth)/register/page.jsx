@@ -2,7 +2,10 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { createUserWithEmailAndPassword, updateProfile, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { signIn } from "next-auth/react";
 import toast from "react-hot-toast";
+import { auth } from "../../../../firebase.config";
 
 export default function RegisterPage() {
   const [formData, setFormData] = useState({
@@ -19,43 +22,70 @@ export default function RegisterPage() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (e) => {
+
+  const handleEmailRegister = async (e) => {
     e.preventDefault();
 
     const { name, email, phone, password, confirmPassword } = formData;
 
     if (!name || !email || !phone || !password || !confirmPassword) {
-      toast.error("Please fill all fields");
+      toast.error("Fill in all fields!");
       return;
     }
     if (password !== confirmPassword) {
-      toast.error("Passwords do not match!");
+      toast.error("Passwords don't match!");
       return;
     }
     if (password.length < 6) {
-      toast.error("Password must be at least 6 characters");
+      toast.error("Password must be at least 6 characters long.");
       return;
     }
 
     setLoading(true);
 
     try {
+      
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+
      
-      toast.success("Registration successful! Redirecting to login...");
-      setTimeout(() => {
-        setFormData({
-          name: "",
-          email: "",
-          phone: "",
-          password: "",
-          confirmPassword: "",
-        });
-        setTimeout(() => router.push("/login"), 2000);
+      await updateProfile(user, {
+        displayName: name,
+        phoneNumber: phone,
       });
-    } catch (err) {
-      toast.error("Registration failed. Try again.");
+
+      toast.success("Account created successfully!");
+
+
+      await signIn("credentials", {
+        email,
+        password,
+        redirect: false,
+      });
+
+     
+      router.push("/");
+    } catch (error) {
+      console.error(error);
+      if (error.code === "auth/email-already-in-use") {
+        toast.error("There is already an account with this email!");
+      } else {
+        toast.error("Registration failed! Try again.");
+      }
     } finally {
       setLoading(false);
+    }
+  };
+
+
+  const handleGoogleRegister = async () => {
+    const provider = new GoogleAuthProvider();
+    try {
+      await signInWithPopup(auth, provider);
+      toast.success("Successfully logged in with Google!");
+      router.push("/");
+    } catch (error) {
+      toast.error("Google login failed!");
     }
   };
 
@@ -63,7 +93,7 @@ export default function RegisterPage() {
     <div className="min-h-screen bg-gradient-to-br from-[#0f0c29] via-purple-900/60 to-pink-900/40 flex items-center justify-center px-4 py-12">
       <div className="w-full max-w-lg">
         <div className="bg-white/10 backdrop-blur-2xl rounded-3xl shadow-2xl border border-purple-500/40 p-8 sm:p-10">
-          {/* Header */}
+
           <div className="text-center mb-10">
             <h1 className="text-4xl sm:text-5xl font-bold text-white mb-3">
               Create Account
@@ -71,9 +101,8 @@ export default function RegisterPage() {
             <p className="text-gray-300 text-lg">Join FruitHub today!</p>
           </div>
 
-          {/* Form */}
-          <form onSubmit={handleSubmit} className="space-y-5">
-            {/* Name */}
+          {/* Email Register Form */}
+          <form onSubmit={handleEmailRegister} className="space-y-5">
             <div>
               <label className="block text-gray-200 font-medium mb-2">Full Name</label>
               <input
@@ -82,12 +111,11 @@ export default function RegisterPage() {
                 value={formData.name}
                 onChange={handleChange}
                 className="w-full px-5 py-4 bg-white/10 border border-purple-500/50 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-green-400 focus:ring-4 focus:ring-green-400/20 transition"
-                placeholder="John Doe"
+                placeholder="Your Name"
                 required
               />
             </div>
 
-            {/* Email */}
             <div>
               <label className="block text-gray-200 font-medium mb-2">Email Address</label>
               <input
@@ -96,12 +124,11 @@ export default function RegisterPage() {
                 value={formData.email}
                 onChange={handleChange}
                 className="w-full px-5 py-4 bg-white/10 border border-purple-500/50 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-green-400 focus:ring-4 focus:ring-green-400/20 transition"
-                placeholder="you@example.com"
+                placeholder="Email"
                 required
               />
             </div>
 
-            {/* Phone */}
             <div>
               <label className="block text-gray-200 font-medium mb-2">Phone Number</label>
               <input
@@ -110,12 +137,11 @@ export default function RegisterPage() {
                 value={formData.phone}
                 onChange={handleChange}
                 className="w-full px-5 py-4 bg-white/10 border border-purple-500/50 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-green-400 focus:ring-4 focus:ring-green-400/20 transition"
-                placeholder="+880 17xx-xxxxxx"
+                placeholder="+880 1xxxxxxxxx"
                 required
               />
             </div>
 
-            {/* Password */}
             <div>
               <label className="block text-gray-200 font-medium mb-2">Password</label>
               <input
@@ -124,12 +150,11 @@ export default function RegisterPage() {
                 value={formData.password}
                 onChange={handleChange}
                 className="w-full px-5 py-4 bg-white/10 border border-purple-500/50 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-green-400 focus:ring-4 focus:ring-green-400/20 transition"
-                placeholder="At least 6 characters"
+                placeholder="must be at least 6 characters long"
                 required
               />
             </div>
 
-            {/* Confirm Password */}
             <div>
               <label className="block text-gray-200 font-medium mb-2">Confirm Password</label>
               <input
@@ -138,12 +163,11 @@ export default function RegisterPage() {
                 value={formData.confirmPassword}
                 onChange={handleChange}
                 className="w-full px-5 py-4 bg-white/10 border border-purple-500/50 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-green-400 focus:ring-4 focus:ring-green-400/20 transition"
-                placeholder="Type password again"
+                placeholder="Conform Password"
                 required
               />
             </div>
 
-            {/* Submit Button */}
             <button
               type="submit"
               disabled={loading}
@@ -153,11 +177,10 @@ export default function RegisterPage() {
                   : "bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 shadow-purple-500/50"
                 }`}
             >
-              {loading ? "Creating Account..." : "Register Now"}
+              {loading ? "Creating..." : "Register Now"}
             </button>
           </form>
 
-          {/* Divider */}
           <div className="flex items-center my-8">
             <div className="flex-1 border-t border-purple-500/30"></div>
             <span className="px-4 text-gray-400 text-sm">or</span>
@@ -165,7 +188,10 @@ export default function RegisterPage() {
           </div>
 
           {/* Google Register */}
-          <button className="w-full py-4 bg-white/10 hover:bg-white/20 border border-purple-500/50 rounded-xl text-white font-medium transition flex items-center justify-center gap-3">
+          <button
+            onClick={handleGoogleRegister}
+            className="w-full py-4 bg-white/10 hover:bg-white/20 border border-purple-500/50 rounded-xl text-white font-medium transition flex items-center justify-center gap-3"
+          >
             <svg className="w-6 h-6" viewBox="0 0 24 24">
               <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
               <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
@@ -175,7 +201,6 @@ export default function RegisterPage() {
             Continue with Google
           </button>
 
-          {/* Login Link */}
           <p className="text-center text-gray-300 mt-8 text-lg">
             Already have an account?{" "}
             <Link href="/login" className="text-green-400 font-bold hover:text-green-300 transition underline">

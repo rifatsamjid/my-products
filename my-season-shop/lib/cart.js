@@ -1,4 +1,4 @@
-// lib/cart.js → পুরোটা রিপ্লেস করো
+
 import toast from "react-hot-toast";
 
 export const addToCart = (product) => {

@@ -1,28 +1,44 @@
+// next.config.js
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  /* config options here */
   reactCompiler: true,
   images: {
     remotePatterns: [
+      // তোমার বর্তমানে যা লাগছে
+      {
+        protocol: "https",
+        hostname: "via.placeholder.com",
+      },
+      {
+        protocol: "https",
+        hostname: "loremflickr.com",
+      },
+      {
+        protocol: "https",
+        hostname: "picsum.photos",
+      },
+      {
+        protocol: "https",
+        hostname: "res.cloudinary.com",
+      },
+      // তোমার পুরানো গুলো রাখো (ভবিষ্যতের জন্য)
       {
         protocol: "https",
         hostname: "i.ibb.co",
-        pathname: "/**",
       },
       {
         protocol: "https",
-        hostname: "i.ibb.co.com",  
-        pathname: "/**",
-      },
-      {
-        protocol: "https",
-        hostname: "**.ibb.co",   
-        pathname: "/**",
+        hostname: "i.ibb.co.com",
       },
       {
         protocol: "https",
         hostname: "images.unsplash.com",
-        pathname: "/**",
+      },
+      // সবচেয়ে নিরাপদ: সব https ডোমেইন allow করো (ডেভেলপমেন্টের জন্য)
+      {
+        protocol: "https",
+        hostname: "**",
       },
     ],
   },
