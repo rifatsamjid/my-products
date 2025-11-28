@@ -29,14 +29,11 @@ export const addToCart = (product) => {
     });
   } else {
     cart.push({ ...product, quantity: 1 });
-    toast.success(`${product.name} added to cart!`, {
-      icon: "Shopping Cart",
-      style: { background: "#10b981", color: "#10b981", color: "white" },
-    });
+
   }
 
   localStorage.setItem("cart", JSON.stringify(cart));
-  triggerCartUpdate(); 
+  triggerCartUpdate();
 };
 
 // Get current cart
@@ -61,11 +58,11 @@ export const removeFromCart = (id) => {
 
   const newCart = cart.filter((item) => item._id !== id);
   localStorage.setItem("cart", JSON.stringify(newCart));
-  triggerCartUpdate(); 
+  triggerCartUpdate();
 
-  toast.error(`${removedItem.name} removed from cart`, {
-    icon: "Trash Can",
-  });
+  // toast.error(`${removedItem.name} removed from cart`, {
+  //   icon: "Trash Can",
+  // });
 };
 
 // Update quantity
@@ -91,7 +88,7 @@ export const updateQuantity = (id, change) => {
   }
 
   localStorage.setItem("cart", JSON.stringify(updatedCart));
-  triggerCartUpdate(); 
+  triggerCartUpdate();
 };
 
 // Clear entire cart

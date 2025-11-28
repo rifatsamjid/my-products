@@ -20,7 +20,7 @@ export default function AddProductForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Validation (extra safety)
+    // Validation 
     if (!formData.name || !formData.shortDescription || !formData.description || !formData.price) {
       toast.error("Please fill all required fields");
       return;

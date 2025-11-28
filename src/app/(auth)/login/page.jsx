@@ -3,7 +3,6 @@ import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
-// import { auth } from "@/lib/firebase.config";
 import toast from "react-hot-toast";
 import { auth } from "../../../../firebase.config";
 

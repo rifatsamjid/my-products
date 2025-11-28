@@ -54,10 +54,10 @@ export default function ProductDetailPage({ params }) {
   const handleAddToCart = () => {
     const cartItem = {
       _id: product._id,
-      name: product.title,               // এটা সবচেয়ে জরুরি
+      name: product.title,               
       price: Number(product.price),
       image_url: product.image_url || "/placeholder.jpg",
-      title: product.title,              // optional, কার্টে দেখানোর জন্য
+      title: product.title,             
     };
 
     addToCart(cartItem);
@@ -65,7 +65,7 @@ export default function ProductDetailPage({ params }) {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#0f0c29] to-purple-900/20 py-12 px-6">
+    <div className="min-h-screen bg-gradient-to-b from-[#0f0c29] to-purple-900/20 py-12 mt-10 px-6">
       <div className="max-w-6xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
           {/* Image */}

@@ -9,11 +9,7 @@ import {
   removeFromCart,
   updateQuantity,
 } from "../../../my-season-shop/lib/cart";
-// import {
-//   getCart,
-// removeFromCart,
-// updateQuantity,
-// } from "@/lib/cart";
+
 
 export default function CartPage() {
   const [cart, setCart] = useState([]);
