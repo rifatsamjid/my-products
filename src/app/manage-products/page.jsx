@@ -1,6 +1,5 @@
 
 import ManageProducts from "@/components/ManageProducts/ManageProducts";
-import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 
 export const metadata = {
