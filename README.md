@@ -1,36 +1,77 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# FruitHub — Fresh Fruits E-commerce Platform
 
-## Getting Started
+- **Frontend**: https://my-products-lime.vercel.app 
+- **Backend API**: https://my-season-server.onrender.com/products
 
-First, run the development server:
+**FruitHub** is a modern, full-stack fresh fruits delivery platform that brings farm-fresh fruits directly to your doorstep. Built with the latest 2025 web technologies, it offers a seamless shopping experience with a stunning glassmorphism UI, real-time product management, and secure authentication.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+Whether you're a customer browsing juicy mangoes or an admin adding new seasonal fruits — FruitHub makes everything fast, beautiful, and effortless.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+## Features
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- Complete User Authentication (Google + Email/Password)
+- Add, View & Manage Products (Full Admin CRUD Panel)
+- Protected Admin Routes (`/add-product`, `/manage-products`)
+- Real-time Product Updates with Toast Notifications
+- Fully Responsive Design (Mobile, Tablet, Desktop)
+- Glassmorphism + Dark Theme UI with Smooth Animations
+- Server-Side Data Fetching (Next.js 16 + MongoDB)
+- Clean & Modern Codebase with App Router
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+## Technologies Used
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+| Category              | Technology                                      |
+|-----------------------|--------------------------------------------------|
+| Frontend Framework    | Next.js 16.0.4 (App Router + Server Components) |
+| Language              | React 19.2.0 + TypeScript (optional)             |
+| Styling               | Tailwind CSS + Glassmorphism Effects             |
+| Authentication        | Firebase Auth + NextAuth.js v4                   |
+| Backend               | Express.js + MongoDB (Custom API)                |
+| State Management      | React Hooks + Context (if needed)                |
+| Notifications         | react-hot-toast                                  |
+| Animations            | Framer Motion 12+                                |
+| Deployment            | Vercel (Frontend) + Render.com (Backend)         |
+| Database              | MongoDB Atlas                                    |
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+## Dependencies
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```json
+{
+  "next": "16.0.4",
+  "react": "19.2.0",
+  "react-dom": "19.2.0",
+  "firebase": "^12.6.0",
+  "next-auth": "^4.24.13",
+  "framer-motion": "^12.23.24",
+  "react-hot-toast": "^2.6.0",
+  "tailwindcss": "^3.4.0",
+  "mongodb": "^6.8.0",
+  "express": "^4.19.2"
+}
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+
+ ## Clone the repository
+
+ git clone https://github.com/rifatsamjid/my-products.git
+ cd my-products
+
+ ## Install dependencies
+
+ npm install
+ # or
+ yarn install
+
+ ## Run the development server
+
+ npm run dev
+ # or
+ yarn dev
+ # or
+ pnpm dev
