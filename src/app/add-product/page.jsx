@@ -1,6 +1,5 @@
 
 import AddProductForm from "@/components/AddProduct/AddProductForm";
-import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 
 export const metadata = {
