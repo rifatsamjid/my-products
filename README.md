@@ -57,21 +57,21 @@ Whether you're a customer browsing juicy mangoes or an admin adding new seasonal
 
 ---
 
- ## Clone the repository
+## Clone the repository
 
- git clone https://github.com/rifatsamjid/my-products.git
- cd my-products
+git clone https://github.com/rifatsamjid/my-products.git
+cd my-products
 
- ## Install dependencies
+## Install dependencies
 
- npm install
- # or
- yarn install
+npm install
+# or
+yarn install
 
- ## Run the development server
+## Run the development server
 
- npm run dev
- # or
- yarn dev
- # or
- pnpm dev
+npm run dev
+# or
+yarn dev
+# or
+pnpm dev
