@@ -4,7 +4,6 @@ import "./globals.css";
 import Navbar from "@/components/Navbar/Navbar";
 import Footer from "@/components/Footer/Footer";
 import { Toaster } from "react-hot-toast";
-import SessionProviderWrapper from "@/components/SessionProviderWrapper";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -26,7 +25,7 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
 
-        <SessionProviderWrapper>
+        
           <Navbar />
 
          
@@ -35,9 +34,9 @@ export default function RootLayout({ children }) {
           </main>
 
           <Footer />
-        </SessionProviderWrapper>
+        
 
-        {/* Toaster বাইরে রাখলাম */}
+        
         <Toaster
           position="top-right"
           toastOptions={{

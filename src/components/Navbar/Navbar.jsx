@@ -2,15 +2,27 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useSession, signOut } from "next-auth/react";
 import toast from "react-hot-toast";
 import Image from "next/image";
+import { auth } from "../../../firebase.config";
+import { signOut } from "firebase/auth";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+
   const pathname = usePathname();
-  const { data: session, status } = useSession();
+
+  // Firebase
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((currentUser) => {
+      setUser(currentUser);
+      setLoading(false);
+    });
+    return () => unsubscribe();
+  }, []);
 
   const isActive = (path) => pathname === path;
 
@@ -20,19 +32,23 @@ export default function Navbar() {
     { name: "Cart", path: "/cart" },
   ];
 
-  const protectedItems = session
+  const adminItems = user
     ? [
         { name: "Add Product", path: "/add-product" },
         { name: "Manage Products", path: "/manage-products" },
       ]
     : [];
 
-  const allNavItems = [...navItems, ...protectedItems];
+  const allNavItems = [...navItems, ...adminItems];
 
   const handleLogout = async () => {
-    await signOut({ callbackUrl: "/" });
-    toast.success("Logged out successfully!");
-    setIsDropdownOpen(false);
+    try {
+      await signOut(auth);
+      toast.success("Logged out successfully!");
+      setIsDropdownOpen(false);
+    } catch (error) {
+      toast.error("Logout failed");
+    }
   };
 
   // Close dropdown when clicking outside
@@ -54,18 +70,17 @@ export default function Navbar() {
             </div>
           </Link>
 
-          {/* Desktop Nav Links */}
+          {/* Desktop Navigation */}
           <div className="hidden lg:flex items-center space-x-1">
             {allNavItems.map((item) => (
               <Link
                 key={item.path}
                 href={item.path}
-                className={`relative px-5 py-3 rounded-xl font-medium text-lg transition-all duration-300
-                  ${
-                    isActive(item.path)
-                      ? "text-green-400 bg-white/10 shadow-lg shadowegreen-500/20"
-                      : "text-gray-300 hover:text-white hover:bg-white/5"
-                  }`}
+                className={`relative px-5 py-3 rounded-xl font-medium text-lg transition-all duration-300 ${
+                  isActive(item.path)
+                    ? "text-green-400 bg-white/10 shadow-lg shadow-green-500/20"
+                    : "text-gray-300 hover:text-white hover:bg-white/5"
+                }`}
               >
                 {item.name}
                 {isActive(item.path) && (
@@ -75,10 +90,10 @@ export default function Navbar() {
             ))}
           </div>
 
-          {/* Right Side: User Image  + Dropdown */}
+          {/* Right Side: Profile / Login */}
           <div className="flex items-center gap-4">
-            
-            {status === "authenticated" && session?.user ? (
+            {/* Logged In User */}
+            {user ? (
               <div className="relative">
                 <button
                   onClick={(e) => {
@@ -87,9 +102,9 @@ export default function Navbar() {
                   }}
                   className="relative w-11 h-11 rounded-full overflow-hidden ring-4 ring-purple-500/30 hover:ring-purple-500/60 transition shadow-lg"
                 >
-                  {session.user.image ? (
+                  {user.photoURL ? (
                     <Image
-                      src={session.user.image}
+                      src={user.photoURL}
                       alt="User"
                       width={44}
                       height={44}
@@ -97,24 +112,23 @@ export default function Navbar() {
                     />
                   ) : (
                     <div className="w-full h-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-white font-bold text-lg">
-                      {session.user.name?.[0] || session.user.email?.[0] || "U"}
+                      {user.displayName?.[0] || user.email?.[0] || "U"}
                     </div>
                   )}
                 </button>
 
-                {/* Dropdown - Name, Email & Logout */}
+                {/* Dropdown Menu */}
                 {isDropdownOpen && (
                   <div className="absolute right-0 mt-3 w-72 bg-black/95 backdrop-blur-2xl border border-purple-500/40 rounded-2xl shadow-2xl p-6 z-50">
                     <div className="space-y-4">
                       <div>
                         <p className="text-white font-bold text-lg">
-                          {session.user.name || "User"}
+                          {user.displayName || "User"}
                         </p>
                         <p className="text-gray-400 text-sm truncate">
-                          {session.user.email}
+                          {user.email}
                         </p>
                       </div>
-
                       <div className="pt-4 border-t border-purple-500/30">
                         <button
                           onClick={handleLogout}
@@ -140,10 +154,10 @@ export default function Navbar() {
                   </div>
                 )}
               </div>
-            ) : status === "loading" ? (
+            ) : loading ? (
               <div className="w-11 h-11 rounded-full bg-gray-700 animate-pulse"></div>
             ) : (
-              // Not logged in - Show Login & Register
+              /* Not Logged In */
               <div className="hidden lg:flex items-center space-x-4">
                 <Link
                   href="/login"
@@ -160,7 +174,7 @@ export default function Navbar() {
               </div>
             )}
 
-            {/* Mobile Menu Button */}
+            {/* Mobile Menu Toggle */}
             <button
               onClick={() => setIsOpen(!isOpen)}
               className="lg:hidden p-3 rounded-xl hover:bg-white/10 transition"
@@ -199,7 +213,7 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* Mobile Menu - Same as before */}
+      {/* Mobile Menu */}
       {isOpen && (
         <div className="lg:hidden absolute top-full left-0 right-0 bg-black/95 backdrop-blur-2xl border-t border-purple-500/30 shadow-2xl">
           <div className="px-6 py-6 space-y-4">
@@ -208,27 +222,24 @@ export default function Navbar() {
                 key={item.path}
                 href={item.path}
                 onClick={() => setIsOpen(false)}
-                className={`block px-6 py-4 rounded-xl text-xl font-medium transition-all
-                  ${
-                    isActive(item.path)
-                      ? "text-green-400 bg-gradient-to-r from-green-500/20 to-emerald-500/20 shadow-lg"
-                      : "text-gray-300 hover:text-white hover:bg-white/10"
-                  }`}
+                className={`block px-6 py-4 rounded-xl text-xl font-medium transition-all ${
+                  isActive(item.path)
+                    ? "text-green-400 bg-gradient-to-r from-green-500/20 to-emerald-500/20 shadow-lg"
+                    : "text-gray-300 hover:text-white hover:bg-white/10"
+                }`}
               >
                 {item.name}
               </Link>
             ))}
 
             <div className="pt-6 border-t border-purple-500/30 space-y-4">
-              {session ? (
+              {user ? (
                 <>
                   <div className="px-6">
                     <p className="text-white font-bold text-xl">
-                      {session.user.name || "User"}
+                      {user.displayName || "User"}
                     </p>
-                    <p className="text-gray-400 text-sm">
-                      {session.user.email}
-                    </p>
+                    <p className="text-gray-400 text-sm">{user.email}</p>
                   </div>
                   <button
                     onClick={handleLogout}

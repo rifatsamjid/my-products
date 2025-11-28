@@ -29,7 +29,7 @@ Whether you're a customer browsing juicy mangoes or an admin adding new seasonal
 | Frontend Framework    | Next.js 16.0.4 (App Router + Server Components) |
 | Language              | React 19.2.0 + TypeScript (optional)            |
 | Styling               | Tailwind CSS + Glassmorphism Effects            |
-| Authentication        | Firebase Auth + NextAuth.js v4                  |
+| Authentication        | Firebase Auth                  |
 | Backend               | Express.js + MongoDB (Custom API)               |
 | State Management      | React Hooks + Context (if needed)               |
 | Notifications         | react-hot-toast                                 |
@@ -76,7 +76,6 @@ pnpm dev
   "react": "19.2.0",
   "react-dom": "19.2.0",
   "firebase": "^12.6.0",
-  "next-auth": "^4.24.13",
   "framer-motion": "^12.23.24",
   "react-hot-toast": "^2.6.0",
   "tailwindcss": "^3.4.0",
