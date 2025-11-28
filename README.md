@@ -55,20 +55,21 @@ Whether you're a customer browsing juicy mangoes or an admin adding new seasonal
   "express": "^4.19.2"
 }
 
----
 
-## Clone the repository
-
+### Clone the repository
+```bash
 git clone https://github.com/rifatsamjid/my-products.git
 cd my-products
 
-## Install dependencies
+### Install dependencies
 
 npm install
 # or
 yarn install
+# or
+pnpm install
 
-## Run the development server
+### Run the development server
 
 npm run dev
 # or
