@@ -1,6 +1,12 @@
+"use client";
+
+import React, { useEffect } from "react";
+import { useRouter } from "next/navigation";
+// import { auth } from "@/lib/firebase.config"; 
+// import AddProductForm from "@/components/AddProduct/AddProductForm";
+import toast from "react-hot-toast";
+import { auth } from "../../../firebase.config";
 import AddProductForm from "@/components/AddProduct/AddProductForm";
-import { auth } from "@/lib/firebase.config";
-import { redirect } from "next/navigation";
 
 export const metadata = {
   title: "Add Product - FruitHub",
@@ -8,14 +14,22 @@ export const metadata = {
 };
 
 export default function AddProductPage() {
-  "use client";
+  const router = useRouter();
 
-  React.useEffect(() => {
-    const user = auth.currentUser;
-    if (!user) {
-      redirect("/login");
-    }
-  }, []);
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      if (!user) {
+        toast.error("Please login to add products");
+        router.push("/login");
+      }
+    });
+
+    return () => unsubscribe();
+  }, [router]);
+
+  //  Loading state 
+  // const [loading, setLoading] = React.useState(true);
+  // useEffect(() => { ... setLoading(false) }, []);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#0f0c29] via-purple-900/50 to-pink-900/30 pt-24 pb-16 px-4">
