@@ -1,4 +1,3 @@
-
 "use client";
 import React, { useState } from "react";
 import Link from "next/link";
@@ -14,14 +13,12 @@ export default function LoginPage() {
 
   const handleEmailLogin = async (e) => {
     e.preventDefault();
-
     if (!email || !password) {
-      toast.error("Please fill in both email and password");
+      toast.error("Please fill in both fields");
       return;
     }
 
     setLoading(true);
-
     const result = await signIn("credentials", {
       email,
       password,
@@ -32,17 +29,13 @@ export default function LoginPage() {
       toast.error("Invalid email or password");
       setLoading(false);
     } else {
-      toast.success("Login successful! Welcome back!");
-      setTimeout(() => router.push("/"), 1000);
+      toast.success("Welcome back!");
+      router.push("/");
     }
   };
 
-  const handleGoogleLogin = async () => {
-    try {
-      await signIn("google", { callbackUrl: "/" });
-    } catch (error) {
-      toast.error("Google login failed. Please try again.");
-    }
+  const handleGoogleLogin = () => {
+    signIn("google", { callbackUrl: "/" });
   };
 
   return (
@@ -54,58 +47,35 @@ export default function LoginPage() {
             <h1 className="text-4xl sm:text-5xl font-bold text-white mb-3">
               Welcome Back
             </h1>
-            <p className="text-gray-300 text-lg">
-              Log in to your FruitHub account
-            </p>
+            <p className="text-gray-300 text-lg">Log in to your FruitHub account</p>
           </div>
 
           <form onSubmit={handleEmailLogin} className="space-y-6">
-            <div>
-              <label className="block text-gray-200 font-medium mb-2">
-                Email Address
-              </label>
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="w-full px-5 py-4 bg-white/10 border border-purple-500/50 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-green-400 focus:ring-4 focus:ring-green-400/20 transition"
-                placeholder="you@example.com"
-                required
-              />
-            </div>
-
-            <div>
-              <label className="block text-gray-200 font-medium mb-2">
-                Password
-              </label>
-              <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="w-full px-5 py-4 bg-white/10 border border-purple-500/50 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-green-400 focus:ring-4 focus:ring-green-400/20 transition"
-                placeholder="••••••••"
-                required
-              />
-            </div>
-
-            <div className="flex items-center justify-between text-sm">
-              <label className="flex items-center text-gray-300">
-                <input type="checkbox" className="mr-2 rounded text-green-500" />
-                Remember me
-              </label>
-              <Link href="/forgot-password" className="text-purple-400 hover:text-green-400 transition">
-                Forgot password?
-              </Link>
-            </div>
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="you@example.com"
+              className="w-full px-5 py-4 bg-white/10 border border-purple-500/50 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-green-400 focus:ring-4 focus:ring-green-400/20 transition"
+              required
+            />
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="••••••••"
+              className="w-full px-5 py-4 bg-white/10 border border-purple-500/50 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-green-400 focus:ring-4 focus:ring-green-400/20 transition"
+              required
+            />
 
             <button
               type="submit"
               disabled={loading}
-              className={`w-full py-5 rounded-xl font-bold text-xl text-white transition-all duration-300 transform hover:scale-105 shadow-xl
-                ${loading
+              className={`w-full py-5 rounded-xl font-bold text-xl text-white transition-all duration-300 transform hover:scale-105 shadow-xl ${
+                loading
                   ? "bg-gray-600 cursor-not-allowed"
-                  : "bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-400 hover:to-emerald-400 shadow-green-500/50"
-                }`}
+                  : "bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-400 hover:to-emerald-400"
+              }`}
             >
               {loading ? "Logging in..." : "Log In"}
             </button>
@@ -132,7 +102,7 @@ export default function LoginPage() {
 
           <p className="text-center text-gray-300 mt-8">
             Don't have an account?{" "}
-            <Link href="/register" className="text-green-400 font-bold hover:text-green-300 transition">
+            <Link href="/register" className="text-green-400 font-bold hover:text-green-300 underline">
               Register here
             </Link>
           </p>
