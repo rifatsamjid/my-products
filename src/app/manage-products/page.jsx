@@ -1,19 +1,20 @@
-
 import ManageProducts from "@/components/ManageProducts/ManageProducts";
 import { redirect } from "next/navigation";
+import { auth } from "@/lib/firebase.config";
 
 export const metadata = {
   title: "Manage Products - FruitHub",
   description: "View and manage all products",
 };
 
-export default async function ManageProductsPage() {
-  const session = await getServerSession();
+export default function ManageProductsPage() {
+  "use client";
 
-  
-  if (!session) {
-    redirect("/login");
-  }
+  React.useEffect(() => {
+    if (!auth.currentUser) {
+      redirect("/login");
+    }
+  }, []);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#0f0c29] via-purple-900/50 to-pink-900/30 pt-24 pb-16 px-4">

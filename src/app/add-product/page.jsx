@@ -1,5 +1,5 @@
-
 import AddProductForm from "@/components/AddProduct/AddProductForm";
+import { auth } from "@/lib/firebase.config";
 import { redirect } from "next/navigation";
 
 export const metadata = {
@@ -7,13 +7,15 @@ export const metadata = {
   description: "Add new fresh fruit product",
 };
 
-export default async function AddProductPage() {
-  const session = await getServerSession();
+export default function AddProductPage() {
+  "use client";
 
- 
-  if (!session) {
-    redirect("/login");
-  }
+  React.useEffect(() => {
+    const user = auth.currentUser;
+    if (!user) {
+      redirect("/login");
+    }
+  }, []);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#0f0c29] via-purple-900/50 to-pink-900/30 pt-24 pb-16 px-4">
