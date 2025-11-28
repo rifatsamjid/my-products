@@ -6,17 +6,17 @@ export default function Footer() {
     <footer className=" backdrop-blur-xl border-t border-purple-500/20 mt-32">
       <div className="max-w-7xl mx-auto px-6 py-16 lg:py-20">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-10 lg:gap-16">
-
           {/* Logo + Description */}
           <div className="col-span-2 md:col-span-1">
             <div className="flex items-center space-x-3 mb-6">
-              <div className="w-12 h-12 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center font-bold text-xl shadow-xl">
-                A
+              <div className=" h-11 w-36 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center font-bold text-xl shadow-xl">
+                <span className="text-2xl font-bold ">Fruit Hub</span>
               </div>
-              <span className="text-2xl font-bold ">API Shield</span>
             </div>
             <p className=" text-sm leading-relaxed max-w-xs">
-              The most powerful API security framework. Protect, monitor, and scale your APIs with confidence.
+              FruitHub — Bangladesh’s fastest growing fresh fruit delivery
+              platform. From farm to table in under 24 hours. Always fresh,
+              always seasonal.{" "}
             </p>
           </div>
 
@@ -24,9 +24,18 @@ export default function Footer() {
           <div>
             <h3 className=" font-semibold mb-5 text-lg">Product</h3>
             <ul className="space-y-3">
-              {["Features", "Pricing", "Integrations", "Changelog", "API Studio"].map((item) => (
+              {[
+                "Features",
+                "Pricing",
+                "Integrations",
+                "Changelog",
+                "API Studio",
+              ].map((item) => (
                 <li key={item}>
-                  <Link href="#" className=" hover:text-green-400 transition text-sm">
+                  <Link
+                    href="#"
+                    className=" hover:text-green-400 transition text-sm"
+                  >
                     {item}
                   </Link>
                 </li>
@@ -38,13 +47,18 @@ export default function Footer() {
           <div>
             <h3 className=" font-semibold mb-5 text-lg">Company</h3>
             <ul className="space-y-3">
-              {["About", "Blog", "Careers", "Customers", "Contact"].map((item) => (
-                <li key={item}>
-                  <Link href="#" className=" hover:text-green-400 transition text-sm">
-                    {item}
-                  </Link>
-                </li>
-              ))}
+              {["About", "Blog", "Careers", "Customers", "Contact"].map(
+                (item) => (
+                  <li key={item}>
+                    <Link
+                      href="#"
+                      className=" hover:text-green-400 transition text-sm"
+                    >
+                      {item}
+                    </Link>
+                  </li>
+                )
+              )}
             </ul>
           </div>
 
@@ -52,13 +66,18 @@ export default function Footer() {
           <div>
             <h3 className=" font-semibold mb-5 text-lg">Legal</h3>
             <ul className="space-y-3">
-              {["Privacy", "Terms", "Security", "Cookies", "Status"].map((item) => (
-                <li key={item}>
-                  <Link href="#" className=" hover:text-green-400 transition text-sm">
-                    {item}
-                  </Link>
-                </li>
-              ))}
+              {["Privacy", "Terms", "Security", "Cookies", "Status"].map(
+                (item) => (
+                  <li key={item}>
+                    <Link
+                      href="#"
+                      className=" hover:text-green-400 transition text-sm"
+                    >
+                      {item}
+                    </Link>
+                  </li>
+                )
+              )}
             </ul>
           </div>
         </div>
@@ -66,7 +85,7 @@ export default function Footer() {
         {/* Bottom Section */}
         <div className="mt-16 pt-10 border-t border-purple-500/20 flex flex-col md:flex-row justify-between items-center gap-6">
           <p className="text-gray-500 text-sm">
-            © 2025 API Shield. All rights reserved.
+            © 2025 FruitHub. All rights reserved. Made with love in Bangladesh
           </p>
 
           <div className="flex space-x-6">

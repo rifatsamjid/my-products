@@ -1,6 +1,6 @@
 # FruitHub — Fresh Fruits E-commerce Platform
 
-- **Frontend**: https://my-products-lime.vercel.app 
+- **Frontend**: https://my-products-lime.vercel.app
 - **Backend API**: https://my-season-server.onrender.com/products
 
 **FruitHub** is a modern, full-stack fresh fruits delivery platform that brings farm-fresh fruits directly to your doorstep. Built with the latest 2025 web technologies, it offers a seamless shopping experience with a stunning glassmorphism UI, real-time product management, and secure authentication.
@@ -27,15 +27,44 @@ Whether you're a customer browsing juicy mangoes or an admin adding new seasonal
 | Category              | Technology                                      |
 |-----------------------|--------------------------------------------------|
 | Frontend Framework    | Next.js 16.0.4 (App Router + Server Components) |
-| Language              | React 19.2.0 + TypeScript (optional)             |
-| Styling               | Tailwind CSS + Glassmorphism Effects             |
-| Authentication        | Firebase Auth + NextAuth.js v4                   |
-| Backend               | Express.js + MongoDB (Custom API)                |
-| State Management      | React Hooks + Context (if needed)                |
-| Notifications         | react-hot-toast                                  |
-| Animations            | Framer Motion 12+                                |
-| Deployment            | Vercel (Frontend) + Render.com (Backend)         |
-| Database              | MongoDB Atlas                                    |
+| Language              | React 19.2.0 + TypeScript (optional)            |
+| Styling               | Tailwind CSS + Glassmorphism Effects            |
+| Authentication        | Firebase Auth + NextAuth.js v4                  |
+| Backend               | Express.js + MongoDB (Custom API)               |
+| State Management      | React Hooks + Context (if needed)               |
+| Notifications         | react-hot-toast                                 |
+| Animations            | Framer Motion 12+                               |
+| Deployment            | Vercel (Frontend) + Render.com (Backend)        |
+| Database              | MongoDB Atlas                                   |
+
+---
+
+## Clone the repository
+
+```bash
+git clone https://github.com/rifatsamjid/my-products.git
+cd my-products
+```
+
+## Install dependencies
+
+```bash
+npm install
+# or
+yarn install
+# or
+pnpm install
+```
+
+## Run the development server
+
+```bash
+npm run dev
+# or
+yarn dev
+# or
+pnpm dev
+```
 
 ---
 
@@ -54,25 +83,4 @@ Whether you're a customer browsing juicy mangoes or an admin adding new seasonal
   "mongodb": "^6.8.0",
   "express": "^4.19.2"
 }
-
-
-### Clone the repository
-```bash
-git clone https://github.com/rifatsamjid/my-products.git
-cd my-products
-
-### Install dependencies
-
-npm install
-# or
-yarn install
-# or
-pnpm install
-
-### Run the development server
-
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
+```
