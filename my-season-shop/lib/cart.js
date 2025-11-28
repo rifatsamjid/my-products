@@ -1,4 +1,3 @@
-// lib/cart.js
 
 import toast from "react-hot-toast";
 
@@ -37,7 +36,7 @@ export const addToCart = (product) => {
   }
 
   localStorage.setItem("cart", JSON.stringify(cart));
-  triggerCartUpdate(); // এটা যোগ করো!
+  triggerCartUpdate(); 
 };
 
 // Get current cart
@@ -62,7 +61,7 @@ export const removeFromCart = (id) => {
 
   const newCart = cart.filter((item) => item._id !== id);
   localStorage.setItem("cart", JSON.stringify(newCart));
-  triggerCartUpdate(); // এটা যোগ করো!
+  triggerCartUpdate(); 
 
   toast.error(`${removedItem.name} removed from cart`, {
     icon: "Trash Can",
@@ -92,7 +91,7 @@ export const updateQuantity = (id, change) => {
   }
 
   localStorage.setItem("cart", JSON.stringify(updatedCart));
-  triggerCartUpdate(); // এটা যোগ করো!
+  triggerCartUpdate(); 
 };
 
 // Clear entire cart
