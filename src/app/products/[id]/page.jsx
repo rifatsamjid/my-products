@@ -1,8 +1,9 @@
-
 "use client";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { useEffect, useState } from "react";
+// import { addToCart } from "@/lib/cart";
+import toast from "react-hot-toast";
 import { addToCart } from "../../../../my-season-shop/lib/cart";
 
 export default function ProductDetailPage({ params }) {
@@ -12,8 +13,7 @@ export default function ProductDetailPage({ params }) {
   useEffect(() => {
     async function fetchProduct() {
       try {
-        const { id } = await params; 
-        
+        const { id } = await params;
         const res = await fetch(`https://my-season-server.onrender.com/products/${id}`, {
           cache: "no-store",
         });
@@ -22,8 +22,8 @@ export default function ProductDetailPage({ params }) {
         const data = await res.json();
         setProduct(data);
       } catch (err) {
-        console.error("Fetch error:", err);
-        notFound(); 
+        console.error(err);
+        notFound();
       } finally {
         setLoading(false);
       }
@@ -39,7 +39,7 @@ export default function ProductDetailPage({ params }) {
     );
   }
 
-  if (!product) return null; 
+  if (!product) return null;
 
   const { title, full_description, price, image_url, short_description, date } = product;
 
@@ -49,6 +49,19 @@ export default function ProductDetailPage({ params }) {
       month: "long",
       day: "numeric",
     });
+  };
+
+  const handleAddToCart = () => {
+    const cartItem = {
+      _id: product._id,
+      name: product.title,               // এটা সবচেয়ে জরুরি
+      price: Number(product.price),
+      image_url: product.image_url || "/placeholder.jpg",
+      title: product.title,              // optional, কার্টে দেখানোর জন্য
+    };
+
+    addToCart(cartItem);
+    toast.success(`${product.title} added to cart!`);
   };
 
   return (
@@ -88,7 +101,7 @@ export default function ProductDetailPage({ params }) {
 
             <div className="flex gap-4 pt-6">
               <button
-                onClick={() => addToCart(product)}
+                onClick={handleAddToCart}
                 className="px-10 py-5 bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-400 hover:to-emerald-400 text-white font-bold text-xl rounded-full shadow-2xl hover:shadow-green-500/50 transition-all duration-300 transform hover:scale-105"
               >
                 Add to Cart
